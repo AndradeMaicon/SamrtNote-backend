@@ -4,7 +4,7 @@ Aplicação simples para organizar tarefas do dia ao de uma em uma hora com poss
 
 ---
 
-## Requisitos Funcionais
+## Requisitos funcionais
 
 - O usuário deve poder visualizar um no calendário os dias em que existe alguma tarefa agendada;
 - O usuário deve poder desmarcar uma tarefa agendada a qualquer momento;
