@@ -17,7 +17,7 @@ Aplicação simples para organizar tarefas do dia ao de uma em uma hora com poss
 
 - Backend construito com NodeJS;
 - Typeorm como ORM padrão;
-- Postgreas SQL como banco de dados.
+- Postgres SQL como banco de dados.
 
 ## Regras de negocio
 
