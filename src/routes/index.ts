@@ -1,13 +1,8 @@
-import express from 'express';
-import TasksRoute from './task.routes';
+import { Router } from 'express';
+import tasksRoute from './task.routes';
 
-const router = express.Router();
+const routes = Router();
 
-const tasksRoute = new TasksRoute();
+routes.use('/tasks', tasksRoute);
 
-router
-  .post('/tasks', tasksRoute.store)
-  .get('/tasks', tasksRoute.index)
-  .get('/tasks/:id', tasksRoute.show);
-
-export default router;
+export default routes;
