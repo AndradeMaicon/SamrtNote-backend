@@ -3,32 +3,31 @@
 import { Router } from 'express';
 import { startOfHour, parseISO } from 'date-fns';
 
-import Tasks from '../models/Tasks';
+import TaskRepository from '../repositories/TaskRepository';
 
 const taskRouter = Router();
-
-const tasks: Tasks[] = [];
+const taskRepository = new TaskRepository();
 
 taskRouter.post('/', (request, response) => {
   const { id, date, title, note } = request.body;
 
   const taskDate = startOfHour(parseISO(date));
 
-  const task = new Tasks(id, taskDate, title, note);
-
-  tasks.push(task);
+  const task = taskRepository.store(id, taskDate, title, note);
 
   return response.json(task);
 });
 
 taskRouter.get('/', (request, response) => {
-  return response.json(tasks);
+  const allTasks = taskRepository.index();
+
+  return response.json(allTasks);
 });
 
 taskRouter.get('/:id', (request, response) => {
   const { id } = request.params;
 
-  const findTask = tasks.find(task => task.id === id);
+  const findTask = taskRepository.show(id);
 
   return response.json(findTask);
 });
@@ -37,29 +36,17 @@ taskRouter.put('/:id', (request, response) => {
   const { id } = request.params;
   const { title } = request.body;
 
-  const findTask = tasks.find(task => task.id === id);
+  const updatedTask = taskRepository.update(id, title);
 
-  if (!findTask) {
-    throw new Error('task not a fond');
-  }
-
-  findTask.title = title;
-
-  return response.json(findTask);
+  return response.json(updatedTask);
 });
 
 taskRouter.delete('/:id', (request, response) => {
   const { id } = request.params;
 
-  const findIndexTask = tasks.findIndex(task => task.id === id);
+  const taskList = taskRepository.destroy(id);
 
-  if (!findIndexTask) {
-    throw new Error('Task not a found');
-  }
-
-  tasks.splice(findIndexTask, 1);
-
-  return response.send();
+  return response.json(taskList);
 });
 
 export default taskRouter;
