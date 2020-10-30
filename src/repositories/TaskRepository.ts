@@ -14,21 +14,21 @@ class TasksRepository {
     this.tasks = [];
   }
 
-  public index(): Tasks[] {
+  public getAll(): Tasks[] {
     return this.tasks;
   }
 
-  public show(id: string): Tasks {
+  public singleSearch(id: string): Tasks {
     const findTask = this.tasks.find(task => task.id === id);
 
     if (!findTask) {
-      throw new Error('task not a fond');
+      throw Error('task not a fond');
     }
 
     return findTask;
   }
 
-  public store({ id, date, title, note }: ICreatTaskDTO): Tasks {
+  public create({ id, date, title, note }: ICreatTaskDTO): Tasks {
     const task = new Tasks({ id, date, title, note });
 
     this.tasks.push(task);
@@ -40,7 +40,7 @@ class TasksRepository {
     const findIndexTask = this.tasks.findIndex(task => task.id === id);
 
     if (findIndexTask < 0) {
-      throw new Error('task not a fond');
+      throw Error('task not a fond');
     }
 
     const task = this.tasks[findIndexTask];
@@ -54,11 +54,11 @@ class TasksRepository {
     return task;
   }
 
-  public destroy(id: string): Tasks[] {
+  public delete(id: string): Tasks[] {
     const findIndexTask = this.tasks.findIndex(task => task.id === id);
 
     if (findIndexTask < 0) {
-      throw new Error('task not a fond');
+      throw Error('task not a fond');
     }
 
     this.tasks.splice(findIndexTask, 1);

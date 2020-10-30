@@ -13,40 +13,52 @@ taskRouter.post('/', (request, response) => {
 
   const date = startOfHour(parseISO(taskDate));
 
-  const task = taskRepository.store({ id, date, title, note });
+  const task = taskRepository.create({ id, date, title, note });
 
   return response.json(task);
 });
 
 taskRouter.get('/', (request, response) => {
-  const allTasks = taskRepository.index();
+  const allTasks = taskRepository.getAll();
 
   return response.json(allTasks);
 });
 
 taskRouter.get('/:id', (request, response) => {
-  const { id } = request.params;
+  try {
+    const { id } = request.params;
 
-  const findTask = taskRepository.show(id);
+    const findTask = taskRepository.singleSearch(id);
 
-  return response.json(findTask);
+    return response.json(findTask);
+  } catch (err) {
+    return response.status(400).json({ error: err.message });
+  }
 });
 
 taskRouter.put('/:id', (request, response) => {
-  const { id } = request.params;
-  const { title } = request.body;
+  try {
+    const { id } = request.params;
+    const { title } = request.body;
 
-  const updatedTask = taskRepository.update(id, title);
+    const updatedTask = taskRepository.update(id, title);
 
-  return response.json(updatedTask);
+    return response.json(updatedTask);
+  } catch (err) {
+    return response.status(400).json({ error: err.message });
+  }
 });
 
 taskRouter.delete('/:id', (request, response) => {
-  const { id } = request.params;
+  try {
+    const { id } = request.params;
 
-  const taskList = taskRepository.destroy(id);
+    const taskList = taskRepository.delete(id);
 
-  return response.json(taskList);
+    return response.json(taskList);
+  } catch (err) {
+    return response.status(400).json({ error: err.message });
+  }
 });
 
 export default taskRouter;
