@@ -9,11 +9,11 @@ const taskRouter = Router();
 const taskRepository = new TaskRepository();
 
 taskRouter.post('/', (request, response) => {
-  const { id, date, title, note } = request.body;
+  const { id, taskDate, title, note } = request.body;
 
-  const taskDate = startOfHour(parseISO(date));
+  const date = startOfHour(parseISO(taskDate));
 
-  const task = taskRepository.store(id, taskDate, title, note);
+  const task = taskRepository.store({ id, date, title, note });
 
   return response.json(task);
 });

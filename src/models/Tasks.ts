@@ -1,15 +1,15 @@
 export default class Tasks {
   id: string;
 
-  taskDate: Date;
+  date: Date;
 
   title: string;
 
   note?: string;
 
-  constructor(id: string, taskDate: Date, title: string, note: string) {
+  constructor({ id, date, title, note }: Tasks) {
     this.id = id;
-    this.taskDate = taskDate;
+    this.date = date;
     this.title = title;
     this.note = note;
   }

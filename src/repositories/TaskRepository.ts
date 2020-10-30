@@ -1,5 +1,12 @@
 import Tasks from '../models/Tasks';
 
+interface ICreatTaskDTO {
+  id: string;
+  date: Date;
+  title: string;
+  note: string;
+}
+
 class TasksRepository {
   private tasks: Tasks[];
 
@@ -21,8 +28,8 @@ class TasksRepository {
     return findTask;
   }
 
-  public store(id: string, date: Date, title: string, note: string): Tasks {
-    const task = new Tasks(id, date, title, note);
+  public store({ id, date, title, note }: ICreatTaskDTO): Tasks {
+    const task = new Tasks({ id, date, title, note });
 
     this.tasks.push(task);
 
