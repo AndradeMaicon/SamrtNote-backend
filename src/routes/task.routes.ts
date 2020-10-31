@@ -11,7 +11,16 @@ const taskRepository = new TaskRepository();
 taskRouter.post('/', (request, response) => {
   const { id, taskDate, title, note } = request.body;
 
-  const date = startOfHour(parseISO(taskDate));
+  const parsedDate = parseISO(taskDate);
+  const date = startOfHour(parsedDate);
+
+  const findTaskInSameDate = taskRepository.findByDate(date);
+
+  if (findTaskInSameDate) {
+    return response
+      .status(400)
+      .json({ message: 'This hour is already booked' });
+  }
 
   const task = taskRepository.create({ id, date, title, note });
 

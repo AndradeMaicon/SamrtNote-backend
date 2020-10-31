@@ -1,3 +1,4 @@
+import { isEqual } from 'date-fns';
 import Tasks from '../models/Tasks';
 
 interface ICreatTaskDTO {
@@ -26,6 +27,12 @@ class TasksRepository {
     }
 
     return findTask;
+  }
+
+  public findByDate(date: Date): Tasks | null {
+    const taskOnDate = this.tasks.find(task => isEqual(date, task.date));
+
+    return taskOnDate || null;
   }
 
   public create({ id, date, title, note }: ICreatTaskDTO): Tasks {
