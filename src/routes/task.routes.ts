@@ -1,30 +1,28 @@
 /* eslint consistent-return: ["off"] */
 
 import { Router } from 'express';
-import { startOfHour, parseISO } from 'date-fns';
+import { parseISO } from 'date-fns';
 
 import TaskRepository from '../repositories/TaskRepository';
+import CreateTaskService from '../services/CreateTaskService';
 
 const taskRouter = Router();
 const taskRepository = new TaskRepository();
 
 taskRouter.post('/', (request, response) => {
-  const { id, taskDate, title, note } = request.body;
+  try {
+    const { id, taskDate, title, note } = request.body;
 
-  const parsedDate = parseISO(taskDate);
-  const date = startOfHour(parsedDate);
+    const parsedDate = parseISO(taskDate);
 
-  const findTaskInSameDate = taskRepository.findByDate(date);
+    const createTaskService = new CreateTaskService(taskRepository);
 
-  if (findTaskInSameDate) {
-    return response
-      .status(400)
-      .json({ message: 'This hour is already booked' });
+    const task = createTaskService.execute({ id, parsedDate, title, note });
+
+    return response.json(task);
+  } catch (err) {
+    return response.status(400).json({ error: err.message });
   }
-
-  const task = taskRepository.create({ id, date, title, note });
-
-  return response.json(task);
 });
 
 taskRouter.get('/', (request, response) => {

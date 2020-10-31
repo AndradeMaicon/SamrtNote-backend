@@ -1,7 +1,7 @@
 import { isEqual } from 'date-fns';
 import Tasks from '../models/Tasks';
 
-interface ICreatTaskDTO {
+interface ICreatTask {
   id: string;
   date: Date;
   title: string;
@@ -35,7 +35,7 @@ class TasksRepository {
     return taskOnDate || null;
   }
 
-  public create({ id, date, title, note }: ICreatTaskDTO): Tasks {
+  public create({ id, date, title, note }: ICreatTask): Tasks {
     const task = new Tasks({ id, date, title, note });
 
     this.tasks.push(task);
