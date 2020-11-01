@@ -1,7 +1,7 @@
 import { startOfHour } from 'date-fns';
 
-import Task from '../models/Tasks';
-import TaskRepository from '../repositories/TaskRepository';
+import Task from '@modules/tasks/infra/database/entities/Tasks';
+import TaskRepository from '@modules/tasks/infra/database/repositories/TaskRepository';
 
 interface IRequest {
   id: string;
@@ -17,16 +17,21 @@ class CreateTaskService {
     this.taskRepository = taskRepository;
   }
 
-  public execute({ id, parsedDate, title, note }: IRequest): Task {
+  public async execute({
+    id,
+    parsedDate,
+    title,
+    note,
+  }: IRequest): Promise<Task> {
     const date = startOfHour(parsedDate);
 
-    const findTaskInSameDate = this.taskRepository.findByDate(date);
+    const findTaskInSameDate = await this.taskRepository.findByDate(date);
 
     if (findTaskInSameDate) {
       throw Error('This hour is already booked');
     }
 
-    const task = this.taskRepository.create({ id, date, title, note });
+    const task = await this.taskRepository.create({ id, date, title, note });
 
     return task;
   }

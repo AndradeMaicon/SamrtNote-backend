@@ -3,13 +3,13 @@
 import { Router } from 'express';
 import { parseISO } from 'date-fns';
 
-import TaskRepository from '../repositories/TaskRepository';
-import CreateTaskService from '../services/CreateTaskService';
+import TaskRepository from '@modules/tasks/infra/database/repositories/TaskRepository';
+import CreateTaskService from '@modules/tasks/services/CreateTaskService';
 
 const taskRouter = Router();
 const taskRepository = new TaskRepository();
 
-taskRouter.post('/', (request, response) => {
+taskRouter.post('/', async (request, response) => {
   try {
     const { id, taskDate, title, note } = request.body;
 
@@ -17,7 +17,12 @@ taskRouter.post('/', (request, response) => {
 
     const createTaskService = new CreateTaskService(taskRepository);
 
-    const task = createTaskService.execute({ id, parsedDate, title, note });
+    const task = await createTaskService.execute({
+      id,
+      parsedDate,
+      title,
+      note,
+    });
 
     return response.json(task);
   } catch (err) {
@@ -25,17 +30,17 @@ taskRouter.post('/', (request, response) => {
   }
 });
 
-taskRouter.get('/', (request, response) => {
-  const allTasks = taskRepository.getAll();
+taskRouter.get('/', async (request, response) => {
+  const allTasks = await taskRepository.getAll();
 
   return response.json(allTasks);
 });
 
-taskRouter.get('/:id', (request, response) => {
+taskRouter.get('/:id', async (request, response) => {
   try {
     const { id } = request.params;
 
-    const findTask = taskRepository.singleSearch(id);
+    const findTask = await taskRepository.singleSearch(id);
 
     return response.json(findTask);
   } catch (err) {
@@ -43,12 +48,12 @@ taskRouter.get('/:id', (request, response) => {
   }
 });
 
-taskRouter.put('/:id', (request, response) => {
+taskRouter.put('/:id', async (request, response) => {
   try {
     const { id } = request.params;
     const { title } = request.body;
 
-    const updatedTask = taskRepository.update(id, title);
+    const updatedTask = await taskRepository.update(id, title);
 
     return response.json(updatedTask);
   } catch (err) {
@@ -56,11 +61,11 @@ taskRouter.put('/:id', (request, response) => {
   }
 });
 
-taskRouter.delete('/:id', (request, response) => {
+taskRouter.delete('/:id', async (request, response) => {
   try {
     const { id } = request.params;
 
-    const taskList = taskRepository.delete(id);
+    const taskList = await taskRepository.delete(id);
 
     return response.json(taskList);
   } catch (err) {
