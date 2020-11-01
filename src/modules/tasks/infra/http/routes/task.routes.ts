@@ -3,7 +3,7 @@
 import { Router } from 'express';
 import { parseISO } from 'date-fns';
 
-import TaskRepository from '@modules/tasks/infra/database/repositories/TaskRepository';
+import TaskRepository from '@modules/tasks/infra/typeorm/repositories/TaskRepository';
 import CreateTaskService from '@modules/tasks/services/CreateTaskService';
 
 const taskRouter = Router();
@@ -19,7 +19,7 @@ taskRouter.post('/', async (request, response) => {
 
     const task = await createTaskService.execute({
       id,
-      parsedDate,
+      date: parsedDate,
       title,
       note,
     });

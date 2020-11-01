@@ -1,37 +1,33 @@
 import { startOfHour } from 'date-fns';
 
-import Task from '@modules/tasks/infra/database/entities/Tasks';
-import TaskRepository from '@modules/tasks/infra/database/repositories/TaskRepository';
+import Task from '@modules/tasks/infra/typeorm/entities/Tasks';
+import ITaskRepository from '@modules/tasks/repositories/ITaskRepository';
 
-interface IRequest {
-  id: string;
-  parsedDate: Date;
-  title: string;
-  note: string;
-}
+import ICreateTaskDTO from '@modules/tasks/dtos/ICreateTaskDTO';
 
 class CreateTaskService {
-  private taskRepository: TaskRepository;
-
-  constructor(taskRepository: TaskRepository) {
-    this.taskRepository = taskRepository;
-  }
+  constructor(private taskRepository: ITaskRepository) {}
 
   public async execute({
     id,
-    parsedDate,
+    date,
     title,
     note,
-  }: IRequest): Promise<Task> {
-    const date = startOfHour(parsedDate);
+  }: ICreateTaskDTO): Promise<Task> {
+    const pasedDate = startOfHour(date);
 
-    const findTaskInSameDate = await this.taskRepository.findByDate(date);
+    const findTaskInSameDate = await this.taskRepository.findByDate(pasedDate);
 
     if (findTaskInSameDate) {
       throw Error('This hour is already booked');
     }
 
-    const task = await this.taskRepository.create({ id, date, title, note });
+    const task = await this.taskRepository.create({
+      id,
+      date: pasedDate,
+      title,
+      note,
+    });
 
     return task;
   }

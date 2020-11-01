@@ -1,5 +1,5 @@
 import ICreatTaskDTO from '@modules/tasks/dtos/ICreateTaskDTO';
-import Tasks from '../infra/database/entities/Tasks';
+import Tasks from '../infra/typeorm/entities/Tasks';
 
 interface ITaskRepoistory {
   getByDay(date: Date): Promise<Tasks[] | undefined>;
@@ -10,7 +10,7 @@ interface ITaskRepoistory {
 
   create(data: ICreatTaskDTO): Promise<Tasks>;
 
-  update(id: string, title: string): Promise<Tasks>;
+  update(id: string, title: string): Promise<void>;
 
   delete(id: string): Promise<void>;
 }
