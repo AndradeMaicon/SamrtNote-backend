@@ -1,4 +1,4 @@
-import { isEqual } from 'date-fns';
+import { isEqual, formatISO } from 'date-fns';
 import Tasks from '@modules/tasks/infra/database/entities/Tasks';
 
 import ITaskRepository from '@modules/tasks/repositories/ITaskRepository';
@@ -11,13 +11,17 @@ class TasksRepository implements ITaskRepository {
     this.tasks = [];
   }
 
-  public async getAll(): Promise<Tasks[]> {
-    const taskArrey: Tasks[] = this.tasks;
+  public async getByDay(date: Date): Promise<Tasks[] | undefined> {
+    const tasksOfDay = await this.tasks.filter(
+      task =>
+        formatISO(task.date, { representation: 'date' }) ===
+        formatISO(date, { representation: 'date' }),
+    );
 
-    return taskArrey;
+    return tasksOfDay || undefined;
   }
 
-  public async singleSearch(id: string): Promise<Tasks> {
+  public async detail(id: string): Promise<Tasks> {
     const findTask = await this.tasks.find(task => task.id === id);
 
     if (!findTask) {

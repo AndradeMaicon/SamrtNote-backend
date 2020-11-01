@@ -31,7 +31,15 @@ taskRouter.post('/', async (request, response) => {
 });
 
 taskRouter.get('/', async (request, response) => {
-  const allTasks = await taskRepository.getAll();
+  const date = request.header('date');
+
+  if (!date) {
+    throw Error('Date not a fond');
+  }
+
+  const parsedDate = parseISO(date);
+
+  const allTasks = await taskRepository.getByDay(parsedDate);
 
   return response.json(allTasks);
 });
@@ -40,7 +48,7 @@ taskRouter.get('/:id', async (request, response) => {
   try {
     const { id } = request.params;
 
-    const findTask = await taskRepository.singleSearch(id);
+    const findTask = await taskRepository.detail(id);
 
     return response.json(findTask);
   } catch (err) {

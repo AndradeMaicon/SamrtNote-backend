@@ -2,9 +2,9 @@ import ICreatTaskDTO from '@modules/tasks/dtos/ICreateTaskDTO';
 import Tasks from '../infra/database/entities/Tasks';
 
 interface ITaskRepoistory {
-  getAll(): Promise<Tasks[]>;
+  getByDay(date: Date): Promise<Tasks[] | undefined>;
 
-  singleSearch(id: string): Promise<Tasks | undefined>;
+  detail(id: string): Promise<Tasks | undefined>;
 
   findByDate(date: Date): Promise<Tasks | undefined>;
 
