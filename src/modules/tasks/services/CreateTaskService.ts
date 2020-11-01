@@ -1,19 +1,19 @@
 import { startOfHour } from 'date-fns';
+import { injectable, inject } from 'tsyringe';
 
-import Task from '@modules/tasks/infra/typeorm/entities/Tasks';
-import ITaskRepository from '@modules/tasks/repositories/ITaskRepository';
+import ICreateTaskDTO from '../dtos/ICreateTaskDTO';
+import ITaskRepository from '../repositories/ITaskRepository';
 
-import ICreateTaskDTO from '@modules/tasks/dtos/ICreateTaskDTO';
+import Task from '../infra/typeorm/entities/Task';
 
+@injectable()
 class CreateTaskService {
-  constructor(private taskRepository: ITaskRepository) {}
+  constructor(
+    @inject('TaskRepository')
+    private taskRepository: ITaskRepository,
+  ) {}
 
-  public async execute({
-    id,
-    date,
-    title,
-    note,
-  }: ICreateTaskDTO): Promise<Task> {
+  public async execute({ date, title, note }: ICreateTaskDTO): Promise<Task> {
     const pasedDate = startOfHour(date);
 
     const findTaskInSameDate = await this.taskRepository.findByDate(pasedDate);
@@ -23,7 +23,6 @@ class CreateTaskService {
     }
 
     const task = await this.taskRepository.create({
-      id,
       date: pasedDate,
       title,
       note,

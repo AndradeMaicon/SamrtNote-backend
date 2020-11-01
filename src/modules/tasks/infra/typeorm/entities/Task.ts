@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 
 @Entity('tasks')
-export default class Tasks {
+class Task {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -26,3 +26,5 @@ export default class Tasks {
   @UpdateDateColumn()
   updated_at: Date;
 }
+
+export default Task;
