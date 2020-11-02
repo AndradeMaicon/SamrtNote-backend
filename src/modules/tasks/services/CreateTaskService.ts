@@ -13,7 +13,12 @@ class CreateTaskService {
     private taskRepository: ITaskRepository,
   ) {}
 
-  public async execute({ date, title, note }: ICreateTaskDTO): Promise<Task> {
+  public async execute({
+    user_id,
+    date,
+    title,
+    note,
+  }: ICreateTaskDTO): Promise<Task> {
     const pasedDate = startOfHour(date);
 
     const findTaskInSameDate = await this.taskRepository.findByDate(pasedDate);
@@ -23,6 +28,7 @@ class CreateTaskService {
     }
 
     const task = await this.taskRepository.create({
+      user_id,
       date: pasedDate,
       title,
       note,

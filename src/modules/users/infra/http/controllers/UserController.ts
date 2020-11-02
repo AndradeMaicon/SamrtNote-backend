@@ -12,7 +12,15 @@ export default class UserController {
 
       const user = await userCreate.execute({ name, email, password });
 
-      return response.json(user);
+      const recentUser = {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        created_at: user.created_at,
+        updated_at: user.updated_at,
+      };
+
+      return response.json(recentUser);
     } catch (err) {
       return response.status(400).json({ error: err.message });
     }

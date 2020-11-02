@@ -4,12 +4,16 @@ import User from '@modules/users/infra/typeorm/entities/User';
 
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
 import IUserRepository from '@modules/users/repositories/IUserRepository';
+import IHashProvider from '@modules/users/providers/HashProvider/models/IHashProvider';
 
 @injectable()
 class CreateUserService {
   constructor(
     @inject('UserRepository')
     private userRepository: IUserRepository,
+
+    @inject('HashProvider')
+    private hashProvider: IHashProvider,
   ) {}
 
   public async execute({
@@ -20,10 +24,16 @@ class CreateUserService {
     const emailCheked = await this.userRepository.findByEmail(email);
 
     if (emailCheked) {
-      throw new Error('E-mail already booked');
+      throw new Error('E-mail address already booked');
     }
 
-    const user = await this.userRepository.create({ name, email, password });
+    const hashedPassword = await this.hashProvider.generateHash(password);
+
+    const user = await this.userRepository.create({
+      name,
+      email,
+      password: hashedPassword,
+    });
 
     return user;
   }
