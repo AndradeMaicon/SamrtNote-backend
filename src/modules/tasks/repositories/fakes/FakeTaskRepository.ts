@@ -6,7 +6,7 @@ import Task from '@modules/tasks/infra/typeorm/entities/Task';
 import ITaskRepository from '@modules/tasks/repositories/ITaskRepository';
 import ICreatTaskDTO from '@modules/tasks/dtos/ICreateTaskDTO';
 
-class TasksRepository implements ITaskRepository {
+class FakeTasksRepository implements ITaskRepository {
   private tasks: Task[] = [];
 
   public async create(data: ICreatTaskDTO): Promise<Task> {
@@ -26,4 +26,4 @@ class TasksRepository implements ITaskRepository {
   }
 }
 
-export default TasksRepository;
+export default FakeTasksRepository;
