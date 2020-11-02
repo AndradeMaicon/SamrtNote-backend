@@ -1,18 +1,16 @@
 import { Request, Response } from 'express';
-// import { container } from 'tsyringe';
+import { container } from 'tsyringe';
 
-// import CreateTaskService from '@modules/tasks/services/CreateTaskService';
+import CreateUserService from '@modules/users/services/CreateUserService';
 
 export default class UserController {
   public async create(request: Request, response: Response): Promise<Response> {
     try {
       const { name, email, password } = request.body;
 
-      const user = {
-        name,
-        email,
-        password,
-      };
+      const userCreate = container.resolve(CreateUserService);
+
+      const user = await userCreate.execute({ name, email, password });
 
       return response.json(user);
     } catch (err) {
