@@ -1,15 +1,21 @@
 import FakeUserRepository from '@modules/users/repositories/fakes/FakeUserRepository';
+import FakehashProvider from '@modules/users/providers/HashProvider/fakes/FakeHashProvider';
 
 import CreateUserService from '@modules/users/services/CreateUserService';
 
 let fakeUserRepository: FakeUserRepository;
+let fakeHashProvider: FakehashProvider;
 let createUserService: CreateUserService;
 
 describe('CreateUserService', () => {
   beforeEach(() => {
     fakeUserRepository = new FakeUserRepository();
+    fakeHashProvider = new FakehashProvider();
 
-    createUserService = new CreateUserService(fakeUserRepository);
+    createUserService = new CreateUserService(
+      fakeUserRepository,
+      fakeHashProvider,
+    );
   });
 
   it('should be able create a new user', async () => {
