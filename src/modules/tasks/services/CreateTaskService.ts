@@ -1,6 +1,8 @@
 import { startOfHour } from 'date-fns';
 import { injectable, inject } from 'tsyringe';
 
+import AppError from '@shared/errors/AppErros';
+
 import ICreateTaskDTO from '../dtos/ICreateTaskDTO';
 import ITaskRepository from '../repositories/ITaskRepository';
 
@@ -24,7 +26,7 @@ class CreateTaskService {
     const findTaskInSameDate = await this.taskRepository.findByDate(pasedDate);
 
     if (findTaskInSameDate) {
-      throw Error('This hour is already booked');
+      throw new AppError('This hour is already booked');
     }
 
     const task = await this.taskRepository.create({

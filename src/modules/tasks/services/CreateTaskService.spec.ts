@@ -1,3 +1,5 @@
+import AppError from '@shared/errors/AppErros';
+
 import FakeTaskRepository from '../repositories/fakes/FakeTaskRepository';
 
 import CreateTaskService from './CreateTaskService';
@@ -40,6 +42,6 @@ describe('CreateTask', () => {
         title: 'JestTest',
         note: 'sem nota',
       }),
-    ).rejects.toBeInstanceOf(Error);
+    ).rejects.toBeInstanceOf(AppError);
   });
 });

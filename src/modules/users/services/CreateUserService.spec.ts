@@ -1,3 +1,5 @@
+import AppError from '@shared/errors/AppErros';
+
 import FakeUserRepository from '@modules/users/repositories/fakes/FakeUserRepository';
 import FakehashProvider from '@modules/users/providers/HashProvider/fakes/FakeHashProvider';
 
@@ -41,6 +43,6 @@ describe('CreateUserService', () => {
         email: 'johndoe@gmai.com',
         password: '123456',
       }),
-    ).rejects.toBeInstanceOf(Error);
+    ).rejects.toBeInstanceOf(AppError);
   });
 });

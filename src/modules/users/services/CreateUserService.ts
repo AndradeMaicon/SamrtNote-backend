@@ -1,5 +1,7 @@
 import { injectable, inject } from 'tsyringe';
 
+import AppError from '@shared/errors/AppErros';
+
 import User from '@modules/users/infra/typeorm/entities/User';
 
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
@@ -24,7 +26,7 @@ class CreateUserService {
     const emailCheked = await this.userRepository.findByEmail(email);
 
     if (emailCheked) {
-      throw new Error('E-mail address already booked');
+      throw new AppError('E-mail address already booked');
     }
 
     const hashedPassword = await this.hashProvider.generateHash(password);

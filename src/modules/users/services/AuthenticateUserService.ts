@@ -1,6 +1,8 @@
 import { sign } from 'jsonwebtoken';
 import { injectable, inject } from 'tsyringe';
 
+import AppError from '@shared/errors/AppErros';
+
 import authConfig from '@config/auth';
 import User from '../infra/typeorm/entities/User';
 
@@ -31,7 +33,7 @@ class AuthenticateUserService {
     const user = await this.userRepository.findByEmail(email);
 
     if (!user) {
-      throw new Error('Incorrect email/password combination.');
+      throw new AppError('Incorrect email/password combination.', 401);
     }
 
     const passwordMatched = await this.hashProvider.compareHash(
@@ -40,7 +42,7 @@ class AuthenticateUserService {
     );
 
     if (!passwordMatched) {
-      throw new Error('Incorrect email/password combination.');
+      throw new AppError('Incorrect email/password combination.', 401);
     }
 
     const { secret, expiresIn } = authConfig.jwt;
