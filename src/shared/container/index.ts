@@ -1,6 +1,7 @@
 import { container } from 'tsyringe';
 
 import '@modules/users/providers';
+import './providers';
 
 import ITaskRepository from '@modules/tasks/repositories/ITaskRepository';
 import TaskRepository from '@modules/tasks/infra/typeorm/repositories/TaskRepository';
