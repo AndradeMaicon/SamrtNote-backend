@@ -5,14 +5,14 @@ import AppError from '@shared/errors/AppErros';
 import User from '@modules/users/infra/typeorm/entities/User';
 
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
-import IUserRepository from '@modules/users/repositories/IUserRepository';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import IHashProvider from '@modules/users/providers/HashProvider/models/IHashProvider';
 
 @injectable()
 class CreateUserService {
   constructor(
     @inject('UserRepository')
-    private userRepository: IUserRepository,
+    private userRepository: IUsersRepository,
 
     @inject('HashProvider')
     private hashProvider: IHashProvider,

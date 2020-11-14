@@ -6,7 +6,7 @@ import AppError from '@shared/errors/AppErros';
 import authConfig from '@config/auth';
 import User from '../infra/typeorm/entities/User';
 
-import IUserRepository from '../repositories/IUserRepository';
+import IUsersRepository from '../repositories/IUsersRepository';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 
 interface IRequest {
@@ -23,7 +23,7 @@ interface IResponse {
 class AuthenticateUserService {
   constructor(
     @inject('UserRepository')
-    private userRepository: IUserRepository,
+    private userRepository: IUsersRepository,
 
     @inject('HashProvider')
     private hashProvider: IHashProvider,

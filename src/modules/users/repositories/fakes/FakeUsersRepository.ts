@@ -2,7 +2,7 @@ import { uuid } from 'uuidv4';
 
 import User from '@modules/users/infra/typeorm/entities/User';
 
-import IUserRepository from '@modules/users/repositories/IUserRepository';
+import IUserRepository from '@modules/users/repositories/IUsersRepository';
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
 
 class FakeUserRepository implements IUserRepository {
