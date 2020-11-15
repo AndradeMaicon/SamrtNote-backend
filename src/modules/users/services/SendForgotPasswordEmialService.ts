@@ -37,7 +37,7 @@ class SendForgotPasswordEmailService {
       __dirname,
       '..',
       'views',
-      'frogot_password.hbs',
+      'forgot_password.hbs',
     );
 
     await this.mailProvider.sendMail({

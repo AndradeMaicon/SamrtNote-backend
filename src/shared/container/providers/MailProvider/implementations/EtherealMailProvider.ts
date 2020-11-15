@@ -7,10 +7,10 @@ import ISendMailDTO from '../dtos/ISendMailDTO';
 
 @injectable()
 export default class EtherealMailProvider implements IMailProvider {
-  private cliente: Transporter;
+  private client: Transporter;
 
   constructor(
-    @inject('MailTempleProvider')
+    @inject('MailTemplateProvider')
     private mailTemplateProvider: IMailTemplateProvider,
   ) {
     nodemailer.createTestAccount().then(account => {
@@ -24,7 +24,7 @@ export default class EtherealMailProvider implements IMailProvider {
         },
       });
 
-      this.cliente = transporter;
+      this.client = transporter;
     });
   }
 
@@ -34,7 +34,9 @@ export default class EtherealMailProvider implements IMailProvider {
     subject,
     templateData,
   }: ISendMailDTO): Promise<void> {
-    const message = await this.cliente.sendMail({
+    console.log(to, from, subject, templateData);
+
+    const message = await this.client.sendMail({
       from: {
         name: from?.name || 'Equipe SmartNote',
         address: from?.email || 'esquipe@smartNote.com.br',
