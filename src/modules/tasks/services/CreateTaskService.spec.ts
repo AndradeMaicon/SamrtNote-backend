@@ -1,17 +1,17 @@
 import AppError from '@shared/errors/AppErros';
 
-import FakeTaskRepository from '../repositories/fakes/FakeTaskRepository';
+import FakeTasksRepository from '../repositories/fakes/FakeTasksRepository';
 
 import CreateTaskService from './CreateTaskService';
 
-let fakeTaskRepository: FakeTaskRepository;
+let fakeTasksRepository: FakeTasksRepository;
 let createTaskService: CreateTaskService;
 
 describe('CreateTask', () => {
   beforeEach(() => {
-    fakeTaskRepository = new FakeTaskRepository();
+    fakeTasksRepository = new FakeTasksRepository();
 
-    createTaskService = new CreateTaskService(fakeTaskRepository);
+    createTaskService = new CreateTaskService(fakeTasksRepository);
   });
 
   it('should be able to create a new task', async () => {
